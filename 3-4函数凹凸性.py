@@ -37,8 +37,8 @@ def update_graphs(event):
     ax3.clear()
 
     # Plotting the main function, tangent line, and vertical line
-    ax1.plot(x, f(x), label=f"Function at x = {x0:.2f}")
-    ax1.plot(x, tangent_line, label="Tangent", linestyle='--')
+    ax1.scatter(x, f(x), s=0.01, marker='o', label=f"Function at x = {x0:.2f}")
+    ax1.plot(x, tangent_line, color='orange', label="Tangent", linestyle='--')
     ax1.axvline(x=x0, color='red', linestyle='-.')
     ax1.set_ylim([-5, 10])
     ax1.legend()
@@ -46,7 +46,7 @@ def update_graphs(event):
 
     # Plotting the first derivative, vertical line, and y=0 line
     dy = numerical_df(x)
-    ax2.plot(x, dy, label="First Derivative", color='orange')
+    ax2.scatter(x, dy, s=0.01, marker='o', label="First Derivative", color='orange')
     ax2.axvline(x=x0, color='red', linestyle='-.')
     ax2.axhline(y=0, color='black', linewidth=2)
     ax2.set_ylim([-5, 5])
@@ -55,7 +55,7 @@ def update_graphs(event):
 
     # Plotting the second derivative, vertical line, and y=0 line
     ddy = numerical_ddf(x)
-    ax3.plot(x, ddy, label="Second Derivative", color='green')
+    ax3.scatter(x, ddy, s=0.01, marker='o', label="Second Derivative", color='green')
     ax3.axvline(x=x0, color='red', linestyle='-.')
     ax3.axhline(y=0, color='black', linewidth=2)
     ax3.set_ylim([-15, 5])
@@ -82,13 +82,17 @@ show_curvature_check.pack(side=tk.TOP)
 formula_label = tk.Label(root, text="f(x) = 0.02x³ + 0.02x² - x + sin(1.4x) + (x²)^(1/3)", font=("Arial", 15))
 formula_label.pack(side=tk.TOP)
 
+# Displaying the author information
+author_label = tk.Label(root, text="汪引 - 山东财经大学 - wangyin@sdufe.edu.cn", font=("Arial", 10))
+author_label.pack(side=tk.BOTTOM)
+
 # Create a vertical slider and place it on the left side of the window
-slider = tk.Scale(root, from_=-9, to=9, resolution=0.001, orient=tk.VERTICAL, command=update_graphs)
-slider.pack(side=tk.LEFT, fill=tk.Y, pady=(10, 10))  # Adjust padding as needed
+slider = tk.Scale(root, from_=-9, to=9, resolution=0.001, orient=tk.HORIZONTAL, command=update_graphs)
+slider.pack(side=tk.BOTTOM, fill=tk.X, pady=(10, 10))  # Adjust padding as needed
 
 # Create the Matplotlib figure and axes using GridSpec for layout
 fig = Figure(figsize=(6, 8))  # Adjust the overall size of the figure
-gs = gridspec.GridSpec(3, 1, height_ratios=[4, 1, 1])  # Adjust the height ratios
+gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])  # Adjust the height ratios
 
 ax1 = fig.add_subplot(gs[0])
 ax2 = fig.add_subplot(gs[1])
@@ -102,9 +106,33 @@ canvas = FigureCanvasTkAgg(fig, master=root)
 widget = canvas.get_tk_widget()
 widget.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
-# Displaying the author information
-author_label = tk.Label(root, text="汪引 - 山东财经大学 - wangyin@sdufe.edu.cn", font=("Arial", 10))
-author_label.pack(side=tk.BOTTOM)
+
+""" Initialization """
+x = linspace(-9, 9, 40000)
+# Clear previous plots
+ax1.clear()
+ax2.clear()
+ax3.clear()
+# Plotting the main function, tangent line, and vertical line
+ax1.scatter(x, f(x), s=0.01, marker='o')
+ax1.set_ylim([-5, 10])
+ax1.grid(True)
+# Plotting the first derivative, vertical line, and y=0 line
+dy = numerical_df(x)
+ax2.scatter(x, dy, s=0.01, marker='o', label="First Derivative", color='orange')
+ax2.axhline(y=0, color='black', linewidth=2)
+ax2.set_ylim([-5, 5])
+ax2.legend()
+ax2.grid(True)
+# Plotting the second derivative, vertical line, and y=0 line
+ddy = numerical_ddf(x)
+ax3.scatter(x, ddy, s=0.01, marker='o', label="Second Derivative", color='green')
+ax3.axhline(y=0, color='black', linewidth=2)
+ax3.set_ylim([-15, 5])
+ax3.legend()
+ax3.grid(True)
+canvas.draw()
+
 
 # Run the Tkinter event loop
 root.mainloop()
