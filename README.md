@@ -19,6 +19,11 @@
 
 我们将会审查您的贡献，并在合适的情况下合并到主项目中。
 
+### 讨论和问题
+如有任何讨论或问题，请联系以下邮箱：
+- sduwangyin@163.com
+- wangyin@sdufe.edu.cn
+
 ### 许可
 本项目下的所有内容遵循 [MIT License](LICENSE)。
 
